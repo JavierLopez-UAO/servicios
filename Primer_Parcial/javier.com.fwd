@@ -1,0 +1,17 @@
+$ORIGIN javier.com.
+$TTL 3H
+
+@       IN      SOA     parcial.javier.com. root@javier.com. (
+                0       ; serial
+                1D      ; refresh
+                1H      ; retry
+                1W      ; expire
+                3H )    ; min cache
+
+@       IN      NS      parcial.javier.com.
+
+; hosts en la zona
+
+parcial  IN      A       192.168.50.3
+www     IN      CNAME   parcial
+
