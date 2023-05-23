@@ -85,3 +85,20 @@ vim /etc/systemd/system/streama.service
 	WantedBy=multi-user.target
 
 service streama start
+
+
+--------------------
+ Configurar Streama
+--------------------
+Se ingresa por medio de la IP del Firewall a la página de streama, desde alli se inicia sesión
+
+usuario:	admin
+contraseña:	admin
+
+De ahí Streama solicita realizar una configuración inicial donde se ingresa el path de los videos y la IP
+
+Upload Directory* 	| /home/vagrant/srv/streama/ |
+Base URL *		| http://localhost:8080 |   o	| http://209.191.100.3:8080 |
+Local Video Files	| /home/vagrant/srv/streama/media |
+
+Y queda listo para ser usado
