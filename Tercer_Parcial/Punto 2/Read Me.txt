@@ -1,7 +1,8 @@
 Lista de Comandos en orden usados para configurar las maquinas
 
-Firewall Server
----------------
+-----------------
+ Firewall Server
+-----------------
 sudo -i
 yum install vim -y
 vim /etc/selinux/config
@@ -25,8 +26,26 @@ firewall-cmd --zone=dmz --add-forward-port=port=8080:proto=tcp:toport=8080:toadd
 firewall-cmd --reload
 
 
-Streaming Server
-----------------
+-----------------
+ Port Forwarding
+-----------------
+Se debe configurar el reenvio de puertos en el Firewall desde VirtualBox para acceder al servicio desde un smartphone
+
+---> Adaptador 1 : NAT
+---> Avanzado
+---> Reenvio de puertos
+---> Nueva Regla
+No es necesario configurar las demás opciones (ej: Nombre, IP, Protocolo)
+
+   Puerto Anfitrion	|   Puerto Invitado
+       8080		|       8080
+
+---> Aceptar
+
+
+------------------
+ Streaming Server
+------------------
 sudo -i
 yum install vim -y
 vim /etc/selinux/config
