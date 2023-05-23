@@ -1,0 +1,68 @@
+Lista de Comandos en orden usados para configurar las maquinas
+
+Firewall Server
+---------------
+sudo -i
+yum install vim -y
+vim /etc/selinux/config
+	SELINUX=disabled
+reboot
+
+sudo -i
+service firewalld start
+chkconfig firewalld on
+service NetworkManager stop
+chkconfig NetworkManager off
+vim /etc/sysctl.conf
+	net.ipv4.ip_forward = 1
+firewall-cmd --set-default-zone=dmz
+firewall-cmd --zone=dmz --remove-interface=eth2 --permanent
+firewall-cmd --zone=dmz --add-interface=eth1 --permanent
+firewall-cmd --zone=internal --add-interface=eth2 --permanent
+firewall-cmd --zone=dmz --add-masquerade --permanent
+firewall-cmd --zone=internal --add-masquerade --permanent
+firewall-cmd --zone=dmz --add-forward-port=port=8080:proto=tcp:toport=8080:toaddr=192.168.100.4 --permanent
+firewall-cmd --reload
+
+
+Streaming Server
+----------------
+sudo -i
+yum install vim -y
+vim /etc/selinux/config
+	SELINUX=disabled
+reboot
+
+sudo -i
+dnf update rpm -y
+dnf update -y
+dnf install java-1.8.0-openjdk-headless -y
+yum install wget -y
+mkdir -p /home/vagrant/srv/streama/media
+chmod 664 /home/vagrant/srv/streama/media
+cd /home/vagrant/srv/streama
+wget https://github.com/streamaserver/streama/releases/download/v1.10.4/streama-1.10.4.jar
+chmod +x streama-1.10.4.jar
+java -jar streama-1.10.4.jar
+cp /vagrant/media /home/vagrant/srv/streama/media
+vim /etc/systemd/system/streama.service
+
+
+	[Unit]
+	Description=Streama Server
+	After=syslog.target
+	After=network.target
+
+	[Service]
+	User=root
+	Type=simple
+	ExecStart=/bin/java -jar /home/vagrant/srv/streama/streama-1.10.4.jar
+	Restart=always
+	StandardOutput=syslog
+	StandardError=syslog
+	SyslogIdentifier=Streama
+
+	[Install]
+	WantedBy=multi-user.target
+
+service streama start
